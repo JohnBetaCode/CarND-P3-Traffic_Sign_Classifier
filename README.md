@@ -4,16 +4,14 @@
 ---
 Overview
 ---
-In this project, I used what I've learned about deep neural networks and convolutional neural networks to classify traffic signs. I trained and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset). After the model is trained.
+In this project, I used what I've learned about deep neural networks and convolutional neural networks to classify traffic signs. I trained and validate a model so it can classify traffic sign images using the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset).
 
-I have included an Ipython notebook that contains further instructions 
-and starter code. Be sure to download the [Ipython notebook](https://github.com/JohnBetaCode/CarND-P3-Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.ipynb), and then check and follow the instructions in the [markdown file ](https://github.com/JohnBetaCode/CarND-P3-Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.md). 
+I've included an Ipython notebook that contains further instructions and starter code. Be sure to download the [Ipython notebook](https://github.com/JohnBetaCode/CarND-P3-Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.ipynb), and then check and follow the instructions in the [markdown file ](https://github.com/JohnBetaCode/CarND-P3-Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.md). 
 
-
-To meet specifications, the project required submitting three files: 
+To meet specifications, the project has three principal files: 
 * the Ipython notebook with the code
 * the code exported as an html file
-* a writeup report either as a markdown or pdf file 
+* a writeup report as a markdown file
 
 ---
 Writeup
@@ -22,7 +20,7 @@ Writeup
 * Dataset Summary: The submission includes a basic summary of the data set.
 * Exploratory Visualization: The submission includes an exploratory visualization on the dataset.
 
-**Design and Test a Model Architecture**:
+**Designing and Testing a Model Architecture**:
 * Preprocessing: The submission describes the preprocessing techniques used and why these techniques were chosen.
 * Model Architecture: The submission provides details of the characteristics and qualities of the architecture, including the type of model used, the number of layers, and the size of each layer. Visualizations emphasizing particular qualities of the architecture are encouraged.
 * Model Training: The submission describes how the model was trained by discussing what optimizer was used, batch size, number of epochs and values for hyperparameters.
@@ -48,7 +46,7 @@ This lab requires:
 
 * [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
 
-The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+The lab environment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for details.
 
 ---
 ### Dataset and Repository
