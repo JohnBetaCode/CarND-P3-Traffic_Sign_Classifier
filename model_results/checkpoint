@@ -1,2 +1,2 @@
-model_checkpoint_path: "betanet"
-all_model_checkpoint_paths: "betanet"
+model_checkpoint_path: "BetaNet.ckpt"
+all_model_checkpoint_paths: "BetaNet.ckpt"

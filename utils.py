@@ -26,6 +26,9 @@ import os
 
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import confusion_matrix
+from sklearn.utils.multiclass import unique_labels
+
 # =============================================================================
 def duplicates(lst, item):   
 
@@ -139,23 +142,35 @@ def show_dataset(data, classes_dics, data_label, save_name = None):
     
     plt.show()
     
-def norm_and_gray(img):
+def gray(img):
     
-    """ Normalizates and converts a image to gray scale
+    """ Converts a image to gray scale
     Args:
-        data: `np.darray` dataset samples
-        classes_dics: `list` dictionaries with datasets information
-        data_label: `string` dataset base name
-        save_name: `string` absolute path to save plot
+        img: `np.darray` image to convert to gray
     Returns:
+        dst: `np.darray` image converted to gray scale
     """
     
-    if img.dtype == np.uint8:
-        img = np.array(img/255.0, dtype=np.float32)
+    # if img.dtype == np.uint8:
+    #     img = np.array(img/255.0, dtype=np.float32)
     
     dst = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     dst = dst.reshape(32, 32, 1)
     
+    return dst
+
+def norm(img):
+
+    """ Normalizes a image with mean zero
+    Args:
+        img: `np.darray` image to convert to gray
+    Returns:
+        dst: `np.darray` image normalized
+    """
+
+    if img.dtype == np.uint8:
+        dst = np.array((img-128.)/128., dtype=np.float32)
+
     return dst
 
 def add_noisy(img, *argv):
@@ -179,7 +194,7 @@ def add_noisy(img, *argv):
 
     return noisy
 
-def rot_pers_transform(img, ang=30, d_offset=4):
+def rot_pers_transform(img, ang=20, d_offset=4):
 
     """ Rotate and move image
     Args:
@@ -254,7 +269,7 @@ def get_img_transformations(img):
     # Apply transformations
     X_valid_noise = add_noisy(img, 20, np.random.randint(150), 0.5)
     X_valid_rota  = rot_pers_transform(X_valid_noise)
-    X_valid_gray  = norm_and_gray(X_valid_rota)
+    X_valid_gray  = gray(X_valid_rota)
 
     # Plot results
     _, vframes = plt.subplots(nrows=1, ncols=4)
@@ -272,4 +287,78 @@ def get_img_transformations(img):
     # Save figure
     plt.savefig(file_name)
 
+def plot_history(history, save_name=None):
+
+    A4_PORTRAIT = (8.27, 11.69)
+    A4_LANDSCAPE = A4_PORTRAIT[::-1]
+
+    plt.figure(figsize=A4_LANDSCAPE)
+    plt.title('Model training history: {}'.format("model_training"))
+    plt.plot(history)
+    plt.legend(['Training', 'Validation'])
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.show()
+    if save_name is not None:
+        plt.savefig(save_name)
+
+def plot_confusion_matrix(y_true, y_pred, classes, normalize=False, title=None, cmap=plt.cm.Blues, figsize=(300,40)):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if not title:
+        if normalize:
+            title = 'Normalized confusion matrix'
+        else:
+            title = 'Confusion matrix, without normalization'
+
+    # Compute confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+    # Only use the labels that appear in the data
+    classes = classes[unique_labels(y_true, y_pred)]
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    fig, ax = plt.subplots(figsize=figsize)
+
+    im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
+    ax.figure.colorbar(im, ax=ax)
+    # We want to show all ticks...
+    ax.set(xticks=np.arange(cm.shape[1]),
+           yticks=np.arange(cm.shape[0]),
+           # ... and label them with the respective list entries
+           xticklabels=classes, yticklabels=classes,
+           title=title,
+           ylabel='True label',
+           xlabel='Predicted label')
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+             rotation_mode="anchor")
+
+    # Loop over data dimensions and create text annotations.
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(j, i, format(cm[i, j], fmt),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+    fig.tight_layout()
+    return ax
+
 # =============================================================================
+# W = 14 # input layer has a width
+# H = 14 # input layer has a height
+# F = 5 # convolutional layer has a filter size 
+# P = 0 # padding 
+# S = 1 # stride
+# K = 16 # number of filters
+# W_out =((W-F+2*P)/S) + 1 # width of the next layer
+# H_out =((H-F+2*P)/S) + 1 # heihgt of the next layer
+# D_out = K # the output depth would be equal to the number of filters
+
+# print("W_out:", W_out)
+# print("H_out:", H_out)
+# print("D_out:", D_out)

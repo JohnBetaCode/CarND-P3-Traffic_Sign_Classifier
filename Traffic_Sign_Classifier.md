@@ -1,70 +1,91 @@
-# **P2 - Advanced Road Lane Lines Finding** 
+<!-- 
+**********************************************************************
+https://review.udacity.com/#!/rubrics/481/view 
+
+Project Specification
+Traffic Sign Classification
+
+Dataset Exploration:
+    1 - Dataset Summary: The submission includes a basic summary of the data set.
+    2 - Exploratory Visualization: The submission includes an exploratory visualization on the dataset.
+
+Design and Test a Model Architecture:
+    3 - Preprocessing: The submission describes the preprocessing techniques used and why these techniques were chosen.
+    4 - Model Architecture: The submission provides details of the characteristics and qualities of the architecture, including the type of model used, the number of layers, and the size of each layer. Visualizations emphasizing particular qualities of the architecture are encouraged.
+    5 - Model Training: The submission describes how the model was trained by discussing what optimizer was used, batch size, number of epochs and values for hyperparameters.
+    6 - The submission describes the approach to finding a solution. Accuracy on the validation set is 0.93 or greater.
+
+Test a Model on New Images:
+    7 - Acquiring New Images: The submission includes five new German Traffic signs found on the web, and the images are visualized. Discussion is made as to particular qualities of the images or traffic signs in the images that are of interest, such as whether they would be difficult for the model to classify.
+    8 - Performance on New Images: The submission documents the performance of the model when tested on the captured images. The performance on the new images is compared to the accuracy results of the test set.
+    9 - The top five softmax probabilities of the predictions on the captured images are outputted. The submission discusses how certain or uncertain the model is of its predictions.
+
+Optional:
+    VISUALIZE LAYERS OF THE NEURAL NETWORK
+
+**********************************************************************
+-->
+
+# **P3 - Building a Traffic Sign Recognition/Classifier** 
 
 ### **Description**
----
 
-### **Used Methods**
+In this project, I used what I've learned about deep neural networks and convolutional neural networks to classify traffic signs. Specifically, I trained a model to classify traffic signs from the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset).
 
-The tools that I used for pipeline are color spaces (HSV and HLS), regions of interest, gaussian smoothing (filters), canny edge detection, hough lineTransform detection, histograms peaks, sliding windows, transformation matrix for surface projection and others. To achieve the goal was pieced together in to a pipeline to detect the lane lines of each side of the road for images and videos. The curvatures of lines were calculated from a second order linear regression to later estimate the car's steering and position respect to road center.
 
----
+<img src="https://falrunc.files.wordpress.com/2017/04/roadsigns.jpg" alt="drawing" width="800"/>  
 
-**Build a Traffic Sign Recognition Project**
+This repository is designed to be a simple, easy to use environment in which you can code run the Traffic Sign Classifier.
 
 The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
+* Load the data set
 * Explore, summarize and visualize the data set
 * Design, train and test a model architecture
 * Use the model to make predictions on new images
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
+---
+### **Used Methods**
 
-[//]: # (Image References)
-
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
-
+The model is based on the LeNet arquitecture with some modifcactions. The tools and concepts that I used for the pipeline are Convolutional Neural Networks, Statical Invariance, Filters, Feature Map Sizes, CNNs visualization, pooling, backprop, regularization, droput, and others.
 
 ---
-
 ### **How to run**
 
-## Rubric Points
-### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+To run the pipeline just launch and run the Jupyter notebook:
 
----
-### Writeup / README
+`Traffic_Sign_Classifier.ipynb`
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
+Be sure that you alreade download the [German Traffic Sign Dataset](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset) and is descompresed in the subfolder `traffic-signs-data`.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+Tested on: python 3.5, OpenCV 3.0.0, UBUNTU 16.04, and TensorFlow 1.10.
+
+Please feel free to change or modify any hyperparameter for training or change the model arquitecture. Some util functions are in the file `utils.py` in case you want to check or modify something.
 
 ---
 ### Data Set Summary & Exploration
 
-<!-- #### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually. -->
+<!-- 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually. -->
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+The pickled data is a dictionary with 4 key/value pairs:
 
-* The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+- `'features'` is a 4D array containing raw pixel data of the traffic sign images, (num examples, width, height, channels).
+- `'labels'` is a 1D array containing the label/class id of the traffic sign. The file `signnames.csv` contains id -> name mappings for each id.
+- `'sizes'` is a list containing tuples, (width, height) representing the original width and height the image.
+- `'coords'` is a list containing tuples, (x1, y1, x2, y2) representing coordinates of a bounding box around the sign in the image.
+
+The function `summary_data_sets()` in `utils.py` summarizes the dataset and print for each class the amount of samples for training, validation and testing process, showing its percentage in the dataset.
+
+<img src="writeup_files/dataset_description_1.png" alt="drawing" width="600"/>  
 
 <!-- #### 2. Include an exploratory visualization of the dataset. -->
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
 
-![alt text][image1]
+<img src="writeup_files/dataset_description_original_data.png" alt="drawing" width="600"/>  
+
+<img src="writeup_files/dataset_random_visualization.png" alt="drawing" width="600"/>  
 
 ---
 ### Design and Test a Model Architecture
@@ -199,6 +220,6 @@ While neural networks can be a great learning device they are often referred to 
 > **Mail:** &nbsp;john.betancourt93@gmail.com  
 > **Web:** &nbsp; www.linkedin.com/in/jhon-alberto-betancourt-gonzalez-345557129 
 
-<img src="https://media.giphy.com/media/zOvBKUUEERdNm/giphy.gif" alt="drawing" width="400"/>  
+<img src="https://media.tenor.com/images/c1191ca56482c432043395f64cfb9a80/tenor.gif" alt="drawing" width="400"/>  
 
 <!-- Sorry for my English -->
