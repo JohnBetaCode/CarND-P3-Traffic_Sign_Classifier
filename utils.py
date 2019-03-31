@@ -20,6 +20,7 @@ Tested on:
 # =============================================================================
 #importing useful packages
 import numpy as np
+import glob
 import cv2
 import csv
 import os
@@ -222,7 +223,7 @@ def rot_pers_transform(img, ang=20, d_offset=4):
 
     return dst
 
-def balance_data(data, labels, classes_dics, data_label = 'train', desired_samples = 1000):
+def balance_data(data, labels, classes_dics, data_label = 'train', ang=20, d_offset=4, noise=150, desired_samples = 1000):
     
     """ Complete and balance dataset
     Args:
@@ -234,9 +235,9 @@ def balance_data(data, labels, classes_dics, data_label = 'train', desired_sampl
     Returns:
     """
 
+    desired_samples = np.random.randint(int(desired_samples*0.5), desired_samples)
     new_data = []; new_labels = []
-    for idx, dic in enumerate(classes_dics):
-        
+    for idx, dic in enumerate(classes_dics): 
         if dic[data_label] < desired_samples:
             diff = desired_samples - dic[data_label]
             
@@ -245,8 +246,8 @@ def balance_data(data, labels, classes_dics, data_label = 'train', desired_sampl
                 sample = data[dic[data_label+'_idx'][rand_idx]]
                 
                 # Apply transformations
-                sample = add_noisy(sample, 20, np.random.randint(150), 0.5)
-                sample = rot_pers_transform(sample)
+                sample = add_noisy(sample, 20, np.random.randint(noise), 0.5)
+                sample = rot_pers_transform(sample, ang, d_offset)
                 
                 # Append new values to lists
                 new_labels.append(idx)
@@ -347,6 +348,29 @@ def plot_confusion_matrix(y_true, y_pred, classes, normalize=False, title=None, 
                     color="white" if cm[i, j] > thresh else "black")
     fig.tight_layout()
     return ax
+
+def load_new_data(path, image_shape=(32,32), plot=True, save_name=None, n_classes=43):
+
+    extensions = ["jpg","gif","png","tga"]
+
+    # Load images in 'path'
+    image_path_list = [item for i in [glob.glob(path+'/*.%s' % ext) for ext in extensions] for item in i]
+    X_test_new = np.asarray([cv2.cvtColor(cv2.resize(cv2.imread(img_path),image_shape[:2]), cv2.COLOR_BGR2RGB) \
+                  for idx, img_path in enumerate(image_path_list)])
+    y_test_new = [int(os.path.splitext(path)[0].split("_")[-1]) for path in image_path_list]
+
+    if plot:
+        # Visualize new dataset
+        plt.figure(figsize=(20,30)); columns = 6
+        for idx in range(0, len(X_test_new) if len(X_test_new) <= 12 else 12):
+            ax = plt.subplot(np.ceil(n_classes/columns), columns, idx + 1)
+            plt.imshow(X_test_new[idx])
+            ax.set_xlabel(str(idx)+": "+image_path_list[idx].split("/")[-1].split(".")[0][0:15])
+        if save_name is not None:
+            plt.savefig(save_name)
+        plt.show()
+
+    return X_test_new, y_test_new
 
 # =============================================================================
 # W = 14 # input layer has a width
