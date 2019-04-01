@@ -175,18 +175,37 @@ My final model results were:
 * validation set accuracy of 98.80% 
 * test set accuracy of 97.07%
 
-If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?  
-    * Description
+    * The start point was the original LeNet-5 arquitecture, if you dont have idea how to strat, LeNet is great help. The LeNet's arquitecture is enought to get first results over 88% acuaracy. LeNet is perfect to test that everything in your machine work propertly and data is good.  
+
 * What were some problems with the initial architecture?
-    * Description
+    * LeNet-5 is quite old, and it was created to classify digits, so for trafic sing images is necessary to extract more catheristic and LexNet could be limited for this.  
+
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over-fitting or under-fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-    * Description
+    * The size of convolutinal layer was increment, so more features can be extract and get more presition, to avoid overfitting Dropout was used at the end of each fully conected layer. The syllabus of the lectures it is explained in great detail how the convolution layer adds a big number of parameters (weights, biases) and neurons. This layer, once trained, it is able to extract meaning patterns from the image. For lower layers those filters look like edge extractors. For higher layers, those primitive shapes are combined to describe more complex forms. Those filters involve a high number of parameters, and a big issue of the design of deep networks in how to be able to describe complex forms and still be able to reduce the number of parameters. Since neighboring pixels are strongly correlated (specially in lowest layers), it makes sense to reduce the size of the output by subsampling (pooling) the filter response. The further apart two pixels are from each other, the less correlated. Therefore, a big stride in the pooling layer leads to high information loss. Loosely speaking. A stride of 2 and a kernel size 2x2 for the pooling layer is a common choice.  
+
 * Which parameters were tuned? How were they adjusted and why?
-    * Description
+
+        LEARNING_RATE = 0.0005 
+        DATA_AUGMENTA = 1   
+        NUM_CHANNELS = 3  
+        BATCH_SIZE = 128   
+        EPOCHS = 150   
+     
+    *  `LEARNING_RATE` is a hyper-parameter that controls how much we are adjusting the weights of our network with respect the loss gradient. The lower the value, the slower we travel along the downward slope. While this might be a good idea (using a low learning rate) in terms of making sure that we do not miss any local minima, it could also mean that we’ll be taking a long time to converge — especially if we get stuck on a plateau region.
+
+    * `DATA_AUGMENTA` Enables or disables the use of data augmentation, the reasons to use this were already explained.
+
+    * `NUM_CHANNELS` Number of channels in samples, if setted as 1 the datasets will be converted to grayscale images, to color features will be not extracted.
+
+    * `BATCH_SIZE` The batch size is a hyperparameter that defines the number of samples to work through before updating the internal model parameters. This value can be increased as more memory is available. 128 is a standard value.
+
+    * `EPOCHS` The number of epochs is a hyperparameter of gradient descent that controls the number of complete passes through the training dataset. One epoch means that each sample in the training dataset has had an opportunity to update the internal model parameters. An epoch is comprised of one or more batches. The number of epochs is traditionally large, often hundreds or thousands, allowing the learning algorithm to run until the error from the model has been sufficiently minimized.
+
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-    * Description
- 
+    * I decid use Dropout becaouse has the effect of making the training process noisy, forcing nodes within a layer to probabilistically take on more or less responsibility for the inputs. This conceptualization suggests that perhaps dropout breaks-up situations where network layers co-adapt to correct mistakes from prior layers, in turn making the model more robust.
+    * The pooling layer serves to progressively reduce the spatial size of the representation, to reduce the number of parameters, memory footprint and amount of computation in the network, and hence to also control overfitting.
+    
 ---
 ### Test a Model on New Images
 
