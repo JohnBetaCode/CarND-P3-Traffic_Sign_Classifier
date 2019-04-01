@@ -223,3 +223,30 @@ While neural networks can be a great learning device they are often referred to 
 <img src="https://media.tenor.com/images/c1191ca56482c432043395f64cfb9a80/tenor.gif" alt="drawing" width="400"/>  
 
 <!-- Sorry for my English -->
+
+
+<img src="writeup_files/data_augmentation_sample_0.png" alt="drawing" width="800"/>  
+<img src="writeup_files/data_augmentation_sample_1.png" alt="drawing" width="800"/>    
+<img src="writeup_files/data_augmentation_sample_3.png" alt="drawing" width="800"/>  
+<img src="writeup_files/data_augmentation_sample_4.png" alt="drawing" width="800"/>
+
+<img src="writeup_files/dataset_description_balanced_data.png" alt="drawing" width="800"/> 
+
+<img src="writeup_files/dataset_random_visualization.png" alt="drawing" width="800"/> 
+
+
+<img src="writeup_files/dataset_random_visualization_balanced.png" alt="drawing" width="800"/> 
+
+<img src="writeup_files/training_graph.png" alt="drawing" width="800"/> 
+<img src="writeup_files/Confusion_matrix_without_normalization.png" alt="drawing" width="800"/> 
+<img src="writeup_files/Normalized_confusion_matrix.png" alt="drawing" width="800"/>
+
+<img src="writeup_files/new_data_set.png" alt="drawing" width="800"/>
+<img src="writeup_files/new_dataset_testing_1.png" alt="drawing" width="800"/>
+<img src="writeup_files/new_dataset_testing_2.png" alt="drawing" width="800"/>
+<img src="writeup_files/new_dataset_testing_3.png" alt="drawing" width="800"/>
+
+
+<img src="writeup_files/visualization_layer_0.png" alt="drawing" width="200"/> 
+<img src="writeup_files/visualization_layer_1.png" alt="drawing" width="800"/> 
+<img src="writeup_files/visualization_layer_2.png" alt="drawing" width="800"/> 
